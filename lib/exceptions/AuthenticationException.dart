@@ -1,0 +1,11 @@
+import 'package:services/ServiceException.dart';
+
+class AuthenticationException extends ServiceException {
+  static final String WRONG_CREDENTIALS = 'wrong-credentials';
+  static final String USER_NOT_FOUND = 'user-not-found';
+  static final String TOO_MANY_REQUEST = 'too-many-request';
+  static final String USER_ALREADY_IN_EXISTS = 'email-already-in-use';
+
+  const AuthenticationException({code, message})
+      : super(code: code, message: message);
+}
