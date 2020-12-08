@@ -241,6 +241,45 @@ main() {
       );
     });
   });
+
+  group('UserService.delete', () {
+    test('Should call delete method', () async {
+      final _FirebaseAuthGetaway firebaseAuthGetaway = _FirebaseAuthGetaway();
+
+      final UserService userService = UserService(
+        firebaseAuthGetaway: firebaseAuthGetaway,
+      );
+
+      await userService.delete();
+
+      verify(firebaseAuthGetaway.delete());
+    });
+
+    test('Should require recent login', () async {
+      final _FirebaseAuthGetaway firebaseAuthGetaway = _FirebaseAuthGetaway();
+
+      when(firebaseAuthGetaway.delete()).thenThrow(
+        AuthenticationException(
+          code: AuthenticationException.REQUIRE_RECENTE_LOGIN,
+        ),
+      );
+
+      final UserService userService = UserService(
+        firebaseAuthGetaway: firebaseAuthGetaway,
+      );
+
+      expect(
+        () async => await userService.delete(),
+        throwsA(
+          allOf(
+            isInstanceOf<AuthenticationException>(),
+            predicate(
+                (f) => f.code == AuthenticationException.REQUIRE_RECENTE_LOGIN),
+          ),
+        ),
+      );
+    });
+  });
 }
 
 class _FirebaseAuthGetaway extends Mock implements FirebaseAuthGetaway {}

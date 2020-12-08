@@ -75,4 +75,16 @@ class FirebaseAuthGetaway {
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
+
+  Future<void> delete() async {
+    try {
+      await _firebaseAuth.currentUser.delete();
+    } on FirebaseAuthException catch (e) {
+      print('Firebase error: ${e.code}');
+
+      throw new AuthenticationException(
+        code: AuthenticationException.REQUIRE_RECENTE_LOGIN,
+      );
+    }
+  }
 }

@@ -54,4 +54,12 @@ class UserService {
   Future<void> signOut() async {
     await firebaseAuthGetaway.signOut();
   }
+
+  Future<void> delete() async {
+    try {
+      await firebaseAuthGetaway.delete();
+    } on AuthenticationException catch (e) {
+      throw new AuthenticationException(code: e.code);
+    }
+  }
 }
